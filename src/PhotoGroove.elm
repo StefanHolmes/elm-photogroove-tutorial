@@ -1,5 +1,6 @@
-module PhotoGroove exposing (..)
+module PhotoGroove exposing (main)
 
+import Browser
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
@@ -13,9 +14,7 @@ view model =
     div [ class "content" ]
         [ h1 [] [ text "Photo Groove" ]
         , div [ id "thumbnails" ]
-            (List.map (viewThumbnail model.selectedUrl)
-                model.photos
-            )
+            (List.map (viewThumbnail model.selectedUrl) model.photos)
         , img
             [ class "large"
             , src (urlPrefix ++ "large/" ++ model.selectedUrl)
@@ -24,11 +23,11 @@ view model =
         ]
 
 
-viewThumbnail selectedUrl thumbnail =
+viewThumbnail selectedUrl thumb =
     img
-        [ src (urlPrefix ++ thumbnail.url)
-        , classList [ ( "selected", selectedUrl == thumbnail.url ) ]
-        , onClick { operation = "SELECT_PHOTO", data = thumbnail.url }
+        [ src (urlPrefix ++ thumb.url)
+        , classList [ ( "selected", selectedUrl == thumb.url ) ]
+        , onClick { description = "ClickedPhoto", data = thumb.url }
         ]
         []
 
@@ -44,15 +43,16 @@ initialModel =
 
 
 update msg model =
-    if msg.operation == "SELECT_PHOTO" then
+    if msg.description == "ClickedPhoto" then
         { model | selectedUrl = msg.data }
+
     else
         model
 
 
 main =
-    Html.beginnerProgram
-        { model = initialModel
+    Browser.sandbox
+        { init = initialModel
         , view = view
         , update = update
         }

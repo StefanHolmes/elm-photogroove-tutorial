@@ -14,11 +14,11 @@
     </head>
 
     <body>
-        <div id="elm-area"></div>
+        <div id="elm"></div>
 
-        <script src="elm.js"></script>
+        <script src="app.js"></script>
         <script>
-            Elm.PhotoGroove.embed(document.getElementById("elm-area"));
+            Elm.PhotoGroove.init({ node: document.querySelector("#elm") })
         </script>
     </body>
 </html>
